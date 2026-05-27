@@ -27,7 +27,7 @@ variables:
   - name: apiAppName
     value: 'wms-api-apoorv'
   - name: frontendAppName
-    value: 'wms-frontend-apoorv'        # Your active Frontend Web App name
+    value: 'wms-frontend-apoorv'
 
 stages:
 
@@ -57,7 +57,6 @@ stages:
         projects: '$(apiProject)'
         arguments: '--configuration $(buildConfiguration)'
 
-    # Automatically executes your Attendance, Auth, and Employee service tests
     - task: DotNetCoreCLI@2
       displayName: 'Execute Automated Unit Tests'
       inputs:
@@ -82,7 +81,7 @@ stages:
         artifact: 'api-drop'
 
   - job: BuildAngular
-    displayName: 'Compile Angular UI'
+    displayName: 'Compile & Test Angular UI'
     steps:
     - task: NodeTool@0
       inputs:
@@ -92,6 +91,12 @@ stages:
         cd WMS.Frontend
         npm ci
       displayName: 'npm clean install'
+
+    # UPDATED: Using Vitest as per your package.json
+    - script: |
+        cd WMS.Frontend
+        npx vitest run
+      displayName: 'Run Angular Unit Tests (Vitest)'
 
     - script: |
         cd WMS.Frontend
