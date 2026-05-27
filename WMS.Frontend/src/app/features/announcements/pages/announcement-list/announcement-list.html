@@ -101,14 +101,14 @@
               overflow-hidden
               rounded-2xl
               border
-              bg-white
+              bg-[var(--mat-sys-surface-container-low)]
               shadow-sm
             ">
 
             <table
               mat-table
               [dataSource]="announcements"
-              class="w-full">
+              class="w-full bg-[var(--mat-sys-surface-container-low)]">
 
               <ng-container matColumnDef="title">
 
@@ -283,6 +283,7 @@
                   rounded-2xl
                   border
                   border-gray-200
+                  bg-[var(--mat-sys-surface-container-low)]
                   shadow-sm
                 ">
 
@@ -325,7 +326,7 @@
 
                     <mat-icon
                       class="
-                        text-blue-500
+                        text-[var(--mat-sys-primary)]
                       ">
 
                       campaign

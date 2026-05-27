@@ -1,21 +1,23 @@
-<h2 mat-dialog-title>
+<h2 mat-dialog-title class="text-[var(--mat-sys-on-surface)] font-semibold">
   {{ data.title }}
 </h2>
 
 <mat-dialog-content>
-  <p>
+  <p class="text-[var(--mat-sys-on-surface-variant)] text-sm py-2">
     {{ data.message }}
   </p>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button (click)="cancel()">
+<mat-dialog-actions align="end" class="gap-2 px-6 pb-4">
+  <button 
+    mat-button 
+    (click)="cancel()">
     Cancel
   </button>
 
   <button
-    mat-raised-button
-    color="warn"
+    mat-flat-button
+    class="!bg-[var(--mat-sys-error)] !text-[var(--mat-sys-on-error)] hover:!bg-[var(--mat-sys-error-container)] hover:!text-[var(--mat-sys-on-error-container)] transition-colors"
     (click)="confirm()">
     Confirm
   </button>

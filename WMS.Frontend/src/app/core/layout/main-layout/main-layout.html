@@ -1,24 +1,27 @@
-<mat-sidenav-container class="h-screen">
+<mat-sidenav-container class="h-screen bg-[var(--mat-sys-background)]">
+  
   <mat-sidenav
     #sidenav
-    [mode]=" (isMobile$ | async) ? 'over' : 'side' "
-    [opened]=" !(isMobile$ | async) "
-    class="w-65 rounded-none">
-    <div class="p-6 text-2xl font-bold">
+    [mode]="(isMobile$ | async) ? 'over' : 'side'"
+    [opened]="!(isMobile$ | async)"
+    class="w-64 !border-r !border-[var(--mat-sys-outline-variant)] !bg-[var(--mat-sys-surface-container-low)]">
+    
+    <div class="p-6 text-2xl font-black tracking-wider text-[var(--mat-sys-primary)]">
       WMS
     </div>
 
-    <mat-nav-list class="px-2">
-      @for ( item of navigationItems; track item.route) {
+    <mat-nav-list class="px-3">
+      @for (item of navigationItems; track item.route) {
         <a
           mat-list-item
           [routerLink]="item.route"
           routerLinkActive="active-link"
-          (click)=" closeSidenavOnMobile() ">
-          <mat-icon matListItemIcon>
+          class="!rounded-xl mb-1 hover:bg-[var(--mat-sys-hover-state-layer)] transition-colors"
+          (click)="closeSidenavOnMobile()">
+          <mat-icon matListItemIcon class="!text-[var(--mat-sys-on-surface-variant)]">
             {{ item.icon }}
           </mat-icon>
-          <span>
+          <span class="font-medium text-[var(--mat-sys-on-surface)]">
             {{ item.label }}
           </span>
         </a>
@@ -26,26 +29,41 @@
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content>
-    <mat-toolbar color="primary" class="sticky top-0 z-50">
+  <mat-sidenav-content class="flex flex-col">
+    
+    <mat-toolbar class="sticky top-0 z-50 !bg-[var(--mat-sys-surface-container-high)] !text-[var(--mat-sys-on-surface)] border-b border-[var(--mat-sys-outline-variant)] flex items-center px-4">
+      
       @if (isMobile$ | async) {
-        <button mat-icon-button (click)=" sidenav.toggle() ">
-          <mat-icon> menu </mat-icon>
+        <button mat-icon-button class="mr-2" (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
         </button>
       }
-      <span> WMS Portal </span>
+      
+      <span class="font-semibold tracking-tight">WMS Portal</span>
+      
       <span class="flex-1"></span>
-      <span class="mr-4">
-        {{ currentUser?.username }}
-        ({{ currentUser?.role }})
-      </span>
-      <button mat-raised-button color="warn" (click)="logout()">
+      
+      <div class="mr-6 flex flex-col items-end leading-tight hidden sm:flex">
+        <span class="text-sm font-medium text-[var(--mat-sys-on-surface)]">
+          {{ currentUser?.username }}
+        </span>
+        <span class="text-xs text-[var(--mat-sys-on-surface-variant)] uppercase tracking-wider font-semibold">
+          {{ currentUser?.role }}
+        </span>
+      </div>
+      
+      <button 
+        mat-flat-button 
+        class="!bg-[var(--mat-sys-error)] !text-[var(--mat-sys-on-error)] hover:!bg-[var(--mat-sys-error-container)] hover:!text-[var(--mat-sys-on-error-container)] transition-colors"
+        (click)="logout()">
         Logout
       </button>
+
     </mat-toolbar>
 
-    <div class="p-6">
+    <main class="p-6 flex-1 overflow-y-auto">
       <router-outlet />
-    </div>
+    </main>
+
   </mat-sidenav-content>
 </mat-sidenav-container>

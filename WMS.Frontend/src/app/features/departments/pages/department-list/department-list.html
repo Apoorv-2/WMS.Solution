@@ -3,8 +3,7 @@
   <app-page-header title="Departments" subtitle="Manage organizational departments">
     @if (currentUser?.role === 'Admin') {
       <button
-        mat-raised-button
-        color="primary"
+        mat-flat-button
         (click)="openCreateDialog()">
         <mat-icon>
           add
@@ -19,82 +18,78 @@
       <mat-spinner />
     </div>
   } @else {
-    @if ( departments$ | async; as departments) {
-      @if ( departments.length === 0) {
-        <div class="rounded-2xl border border-dashed p-10 text-center">
-          <h2 class="text-xl font-semibold">
+    @if (departments$ | async; as departments) {
+      @if (departments.length === 0) {
+        <div class="rounded-2xl border border-dashed border-[var(--mat-sys-outline-variant)] p-10 text-center bg-[var(--mat-sys-surface-container-low)]">
+          <h2 class="text-xl font-semibold text-[var(--mat-sys-on-surface)]">
             No Departments Found
           </h2>
 
-          <p class="mt-2 text-gray-500">
+          <p class="mt-2 text-sm text-[var(--mat-sys-on-surface-variant)]">
             Create your first department.
           </p>
         </div>
       } @else {
-        <div class="overflow-hidden rounded-2xl border bg-white shadow-sm">
+        <div class="overflow-hidden rounded-2xl border border-[var(--mat-sys-outline-variant)] bg-[var(--mat-sys-surface-container-low)] shadow-sm">
           <table
             mat-table
             [dataSource]="departments"
-            class="w-full">
+            class="w-full !bg-transparent">
+            
             <ng-container matColumnDef="departmentName">
-              <th mat-header-cell *matHeaderCellDef>
+              <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
                 Department
               </th>
-
-              <td mat-cell *matCellDef="let department">
+              <td mat-cell *matCellDef="let department" class="!text-[var(--mat-sys-on-surface)] !border-b-[var(--mat-sys-outline-variant)] font-medium">
                 {{ department.departmentName }}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef>
+              <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
                 Description
               </th>
-
-              <td mat-cell *matCellDef="let department">
+              <td mat-cell *matCellDef="let department" class="!text-[var(--mat-sys-on-surface-variant)] !border-b-[var(--mat-sys-outline-variant)]">
                 {{ department.description || '-' }}
               </td>
             </ng-container>
 
-            <ng-container
-              matColumnDef="employeeCount">
-              <th mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="employeeCount">
+              <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
                 Employees
               </th>
-
-              <td mat-cell *matCellDef="let department">
-                <mat-chip>
+              <td mat-cell *matCellDef="let department" class="!border-b-[var(--mat-sys-outline-variant)]">
+                <mat-chip class="!bg-[var(--mat-sys-secondary-container)] !text-[var(--mat-sys-on-secondary-container)]">
                   {{ department.employeeCount }}
                 </mat-chip>
               </td>
             </ng-container>
 
             <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef>
+              <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
                 Actions
               </th>
-
-              <td mat-cell *matCellDef="let department">
-                @if ( currentUser?.role === 'Admin') {
+              <td mat-cell *matCellDef="let department" class="!border-b-[var(--mat-sys-outline-variant)]">
+                @if (currentUser?.role === 'Admin') {
                   <button
                     mat-icon-button
-                    color="primary"
-                    (click)=" openEditDialog( department) ">
+                    class="!text-[var(--mat-sys-primary)]"
+                    (click)="openEditDialog(department)">
                     <mat-icon> edit </mat-icon>
                   </button>
 
                   <button
                     mat-icon-button
-                    color="warn"
-                    (click)=" deleteDepartment( department) ">
+                    class="!text-[var(--mat-sys-error)]"
+                    (click)="deleteDepartment(department)">
                     <mat-icon> delete </mat-icon>
                   </button>
                 }
               </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef=" displayedColumns "> </tr>
-            <tr mat-row *matRowDef=" let row; columns: displayedColumns "> </tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="!bg-[var(--mat-sys-surface-container-high)]"> </tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" class="hover:bg-[var(--mat-sys-hover-state-layer)] transition-colors"> </tr>
           </table>
         </div>
       }

@@ -1,25 +1,14 @@
 <app-page-header title="Manage Leaves" subtitle="Approve and manage employee leave requests" />
 
 <form [formGroup]="filterForm" class="mb-5 flex flex-wrap gap-4">
-  <mat-form-field appearance="outline">
+  
+  <mat-form-field appearance="outline" class="min-w-[150px]">
     <mat-label> Status </mat-label>
-
     <mat-select formControlName="status">
-      <mat-option value="Pending">
-        Pending
-      </mat-option>
-
-      <mat-option value="Approved">
-        Approved
-      </mat-option>
-
-      <mat-option value="Rejected">
-        Rejected
-      </mat-option>
-
-      <mat-option value="">
-        All
-      </mat-option>
+      <mat-option value="Pending"> Pending </mat-option>
+      <mat-option value="Approved"> Approved </mat-option>
+      <mat-option value="Rejected"> Rejected </mat-option>
+      <mat-option value=""> All </mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -39,13 +28,13 @@
 
   <div class="flex items-center">
     <button
-      mat-raised-button
-      color="primary"
+      mat-flat-button
       type="button"
       (click)="applyFilters()">
       Apply Filters
     </button>
   </div>
+  
 </form>
 
 @if (loading) {
@@ -58,10 +47,12 @@
   <div class="
       rounded-xl
       border
-      border-red-200
-      bg-red-50
+      border-[var(--mat-sys-error-row-border,#fca5a5)]
+      bg-[var(--mat-sys-error-container)]
       p-4
-      text-red-600
+      text-[var(--mat-sys-on-error-container)]
+      text-sm
+      font-medium
     ">
     {{ errorMessage }}
   </div>
@@ -72,84 +63,85 @@
       overflow-hidden
       rounded-2xl
       border
-      border-gray-200
-      bg-white
+      border-[var(--mat-sys-outline-variant)]
+      bg-[var(--mat-sys-surface-container-low)]
       shadow-sm
     ">
 
     @if (leaves.length > 0) {
-      <table mat-table [dataSource]="leaves">
+      <table mat-table [dataSource]="leaves" class="w-full !bg-transparent">
+        
         <ng-container matColumnDef="employee">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Employee
           </th>
-
-          <td mat-cell *matCellDef="let leave">
+          <td mat-cell *matCellDef="let leave" class="!text-[var(--mat-sys-on-surface)] !border-b-[var(--mat-sys-outline-variant)] font-medium">
             {{ leave.employeeName }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="leaveType">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Leave Type
           </th>
-          <td mat-cell *matCellDef="let leave">
+          <td mat-cell *matCellDef="let leave" class="!text-[var(--mat-sys-on-surface-variant)] !border-b-[var(--mat-sys-outline-variant)]">
             {{ leave.leaveType }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="fromDate">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             From
           </th>
-          <td mat-cell *matCellDef="let leave">
+          <td mat-cell *matCellDef="let leave" class="!text-[var(--mat-sys-on-surface)] !border-b-[var(--mat-sys-outline-variant)]">
             {{ leave.fromDate | date }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="toDate">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             To
           </th>
-
-          <td mat-cell *matCellDef="let leave">
+          <td mat-cell *matCellDef="let leave" class="!text-[var(--mat-sys-on-surface)] !border-b-[var(--mat-sys-outline-variant)]">
             {{ leave.toDate | date }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="days">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Days
           </th>
-
-          <td mat-cell *matCellDef="let leave">
+          <td mat-cell *matCellDef="let leave" class="!text-[var(--mat-sys-on-surface)] !border-b-[var(--mat-sys-outline-variant)] font-semibold">
             {{ leave.totalDays }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Status
           </th>
-
-          <td mat-cell *matCellDef="let leave">
+          <td mat-cell *matCellDef="let leave" class="!border-b-[var(--mat-sys-outline-variant)]">
             <app-status-chip [status]="leave.status" />
           </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Actions
           </th>
-
-          <td mat-cell *matCellDef="let leave">
-            @if ( leave.status === 'Pending') {
-              <div class="flex gap-2">
-                <button mat-flat-button color="primary" (click)="approveLeave(leave.leaveId)">
+          <td mat-cell *matCellDef="let leave" class="!border-b-[var(--mat-sys-outline-variant)]">
+            @if (leave.status === 'Pending') {
+              <div class="flex gap-2 py-1">
+                <button 
+                  mat-flat-button 
+                  (click)="approveLeave(leave.leaveId)">
                   Approve
                 </button>
 
-                <button mat-flat-button color="warn" (click)="rejectLeave(leave.leaveId)">
+                <button 
+                  mat-stroked-button 
+                  class="!text-[var(--mat-sys-error)] !border-[var(--mat-sys-error)] hover:!bg-[var(--mat-sys-error-container)]"
+                  (click)="rejectLeave(leave.leaveId)">
                   Reject
                 </button>
               </div>
@@ -157,13 +149,12 @@
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef=" displayedColumns "> </tr>
-        <tr mat-row *matRowDef=" let row; columns: displayedColumns "> </tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="!bg-[var(--mat-sys-surface-container-high)]"> </tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" class="hover:bg-[var(--mat-sys-hover-state-layer)] transition-colors"> </tr>
       </table>
     } @else {
-
-      <div class="py-20 text-center text-gray-500">
-        No leave requests found
+      <div class="py-20 text-center rounded-2xl bg-[var(--mat-sys-surface-container-low)] text-[var(--mat-sys-on-surface-variant)] text-sm">
+        No leave requests found matching selected criteria.
       </div>
     }
   </div>

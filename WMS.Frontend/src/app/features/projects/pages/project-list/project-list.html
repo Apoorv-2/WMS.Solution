@@ -3,214 +3,132 @@
   subtitle="Manage projects and employee allocations">
 
   <button
-    mat-raised-button
-    color="primary"
+    mat-flat-button
     (click)="openCreateDialog()">
-
-    <mat-icon>
-      add
-    </mat-icon>
-
+    <mat-icon>add</mat-icon>
     Create Project
-
   </button>
 
 </app-page-header>
 
 @if (loading) {
-
   <div class="flex justify-center py-16">
-
     <mat-spinner />
-
   </div>
-
 } @else {
 
   @if (errorMessage) {
-
-    <div class="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-red-600">
-
+    <div class="mb-5 rounded-xl border border-[var(--mat-sys-error-row-border,#fca5a5)] bg-[var(--mat-sys-error-container)] p-4 text-[var(--mat-sys-on-error-container)] text-sm font-medium">
       {{ errorMessage }}
-
     </div>
-
   }
 
   @if (projects$ | async; as projects) {
-
-    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-
+    <div class="overflow-hidden rounded-2xl border border-[var(--mat-sys-outline-variant)] bg-[var(--mat-sys-surface-container-low)] shadow-sm">
+      
       <table
         mat-table
-        [dataSource]="projects">
+        [dataSource]="projects"
+        class="w-full !bg-transparent">
 
         <ng-container matColumnDef="projectName">
-
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Project
           </th>
-
-          <td mat-cell *matCellDef="let project">
-
+          <td mat-cell *matCellDef="let project" class="!border-b-[var(--mat-sys-outline-variant)]">
             <button
-              class="font-medium text-left hover:text-blue-600"
+              class="font-semibold text-left text-[var(--mat-sys-primary)] hover:underline transition-all"
               (click)="toggleExpansion(project)">
-
               {{ project.projectName }}
-
             </button>
-
           </td>
-
         </ng-container>
 
         <ng-container matColumnDef="client">
-
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Client
           </th>
-
-          <td mat-cell *matCellDef="let project">
-
+          <td mat-cell *matCellDef="let project" class="!text-[var(--mat-sys-on-surface-variant)] !border-b-[var(--mat-sys-outline-variant)]">
             {{ project.clientName || '—' }}
-
           </td>
-
         </ng-container>
 
         <ng-container matColumnDef="status">
-
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Status
           </th>
-
-          <td mat-cell *matCellDef="let project">
-
-            <app-status-chip
-              [status]="project.status" />
-
+          <td mat-cell *matCellDef="let project" class="!border-b-[var(--mat-sys-outline-variant)]">
+            <app-status-chip [status]="project.status" />
           </td>
-
         </ng-container>
 
         <ng-container matColumnDef="employees">
-
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Employees
           </th>
-
-          <td mat-cell *matCellDef="let project">
-
+          <td mat-cell *matCellDef="let project" class="!text-[var(--mat-sys-on-surface)] !border-b-[var(--mat-sys-outline-variant)] font-semibold">
             {{ project.totalEmployees }}
-
           </td>
-
         </ng-container>
 
         <ng-container matColumnDef="startDate">
-
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Start Date
           </th>
-
-          <td mat-cell *matCellDef="let project">
-
-            {{
-              project.startDate
-                ? (project.startDate | date)
-                : '—'
-            }}
-
+          <td mat-cell *matCellDef="let project" class="!text-[var(--mat-sys-on-surface-variant)] !border-b-[var(--mat-sys-outline-variant)]">
+            {{ project.startDate ? (project.startDate | date) : '—' }}
           </td>
-
         </ng-container>
 
         <ng-container matColumnDef="endDate">
-
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             End Date
           </th>
-
-          <td mat-cell *matCellDef="let project">
-
-            {{
-              project.endDate
-                ? (project.endDate | date)
-                : '—'
-            }}
-
+          <td mat-cell *matCellDef="let project" class="!text-[var(--mat-sys-on-surface-variant)] !border-b-[var(--mat-sys-outline-variant)]">
+            {{ project.endDate ? (project.endDate | date) : '—' }}
           </td>
-
         </ng-container>
 
         <ng-container matColumnDef="actions">
-
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="!text-[var(--mat-sys-on-surface-variant)] !font-semibold !border-b-[var(--mat-sys-outline-variant)]">
             Actions
           </th>
-
-          <td mat-cell *matCellDef="let project">
-
+          <td mat-cell *matCellDef="let project" class="!border-b-[var(--mat-sys-outline-variant)]">
             <button
               mat-icon-button
+              class="!text-[var(--mat-sys-on-surface-variant)]"
               (click)="openEditDialog(project)">
-
-              <mat-icon>
-                edit
-              </mat-icon>
-
+              <mat-icon>edit</mat-icon>
             </button>
-
           </td>
-
         </ng-container>
 
-        <tr
-          mat-header-row
-          *matHeaderRowDef="displayedColumns">
-
-        </tr>
-
-        <tr
-          mat-row
-          *matRowDef="
-            let row;
-            columns: displayedColumns;
-          "
-          class="cursor-pointer hover:bg-gray-50">
-
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="!bg-[var(--mat-sys-surface-container-high)]"></tr>
+        <tr 
+          mat-row 
+          *matRowDef="let row; columns: displayedColumns;"
+          class="cursor-pointer hover:bg-[var(--mat-sys-hover-state-layer)] transition-colors">
         </tr>
 
       </table>
-
     </div>
 
     @if (expandedProjectId()) {
-
-      <div class="mt-5">
-
+      <div class="mt-5 animate-fade-in">
+        
         @if (allocationsLoading()) {
-
           <div class="flex justify-center py-10">
-
             <mat-spinner diameter="40" />
-
           </div>
-
         } @else {
-
           <app-project-allocation-panel
             [projectId]="expandedProjectId()!"
             [allocations]="allocations()"
             (allocationChanged)="reloadExpandedProject()" />
-
         }
-
+        
       </div>
-
     }
 
   }
-
 }

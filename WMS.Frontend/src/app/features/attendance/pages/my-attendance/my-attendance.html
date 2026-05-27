@@ -6,9 +6,7 @@
 
   <div class="space-y-6">
 
-    <!-- CURRENT STATUS -->
-
-    <mat-card>
+    <mat-card class="bg-[var(--mat-sys-surface-container-low)]">
 
       <mat-card-content class="p-6">
 
@@ -76,7 +74,7 @@
 
             <div class="space-y-2">
 
-              <h2 class="text-xl font-semibold text-green-700">
+              <h2 class="text-xl font-semibold text-[var(--mat-sys-primary)]">
                 Active Session
               </h2>
 
@@ -115,7 +113,7 @@
 
           <div class="space-y-3">
 
-            <h2 class="text-xl font-semibold text-blue-700">
+            <h2 class="text-xl font-semibold text-[var(--mat-sys-primary)]">
               Session Completed
             </h2>
 
@@ -161,11 +159,9 @@
 
     </mat-card>
 
-    <!-- MONTHLY REPORT -->
-
     <div class="grid gap-4 md:grid-cols-4">
 
-      <mat-card>
+      <mat-card class="bg-[var(--mat-sys-surface-container-low)]">
         <mat-card-content class="p-5">
           <p class="text-sm text-gray-500">
             Present Days
@@ -177,7 +173,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card>
+      <mat-card class="bg-[var(--mat-sys-surface-container-low)]">
         <mat-card-content class="p-5">
           <p class="text-sm text-gray-500">
             Absent Days
@@ -189,7 +185,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card>
+      <mat-card class="bg-[var(--mat-sys-surface-container-low)]">
         <mat-card-content class="p-5">
           <p class="text-sm text-gray-500">
             Total Hours
@@ -201,7 +197,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card>
+      <mat-card class="bg-[var(--mat-sys-surface-container-low)]">
         <mat-card-content class="p-5">
           <p class="text-sm text-gray-500">
             Attendance %
@@ -215,9 +211,7 @@
 
     </div>
 
-    <!-- HISTORY -->
-
-    <mat-card>
+    <mat-card class="bg-[var(--mat-sys-surface-container-low)]">
 
       <mat-card-content class="p-0">
 
@@ -231,7 +225,8 @@
 
           <table
             mat-table
-            [dataSource]="dashboard.history.items">
+            [dataSource]="dashboard.history.items"
+            class="w-full bg-[var(--mat-sys-surface-container-low)]">
 
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef>

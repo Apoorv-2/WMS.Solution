@@ -11,7 +11,7 @@
 
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
 
-      <mat-card appearance="outlined" class="rounded-2xl">
+      <mat-card appearance="outlined" class="rounded-2xl bg-[var(--mat-sys-surface-container-low)] border-[var(--mat-sys-outline-variant)]">
 
         <mat-card-content class="flex items-center gap-4 p-5">
 
@@ -24,10 +24,10 @@
               items-center
               justify-center
               rounded-full
-              bg-blue-50
+              bg-[var(--mat-sys-primary-container)]
             ">
 
-            <mat-icon class="text-blue-600">
+            <mat-icon class="text-[var(--mat-sys-primary)]">
               fact_check
             </mat-icon>
 
@@ -35,11 +35,11 @@
 
           <div>
 
-            <p class="text-xs text-gray-500">
+            <p class="text-xs text-[var(--mat-sys-on-surface-variant)]">
               Team Attendance
             </p>
 
-            <p class="text-3xl font-semibold">
+            <p class="text-3xl font-semibold text-[var(--mat-sys-on-surface)]">
               {{ data.teamAttendanceToday }}
             </p>
 
@@ -49,7 +49,7 @@
 
       </mat-card>
 
-      <mat-card appearance="outlined" class="rounded-2xl">
+      <mat-card appearance="outlined" class="rounded-2xl bg-[var(--mat-sys-surface-container-low)] border-[var(--mat-sys-outline-variant)]">
 
         <mat-card-content class="flex items-center gap-4 p-5">
 
@@ -62,10 +62,10 @@
               items-center
               justify-center
               rounded-full
-              bg-orange-50
+              bg-[var(--mat-sys-error-container)]
             ">
 
-            <mat-icon class="text-orange-500">
+            <mat-icon class="text-[var(--mat-sys-error)]">
               pending_actions
             </mat-icon>
 
@@ -73,13 +73,12 @@
 
           <div>
 
-            <p class="text-xs text-gray-500">
-
-            Absent Today
+            <p class="text-xs text-[var(--mat-sys-on-surface-variant)]">
+              Absent Today
             </p>
 
-            <p class="text-3xl font-semibold">
-              {{ data.teamAbsentToday}}
+            <p class="text-3xl font-semibold text-[var(--mat-sys-on-surface)]">
+              {{ data.teamAbsentToday }}
             </p>
 
           </div>
@@ -88,7 +87,7 @@
 
       </mat-card>
 
-      <mat-card appearance="outlined" class="rounded-2xl">
+      <mat-card appearance="outlined" class="rounded-2xl bg-[var(--mat-sys-surface-container-low)] border-[var(--mat-sys-outline-variant)]">
 
         <mat-card-content class="flex items-center gap-4 p-5">
 
@@ -101,10 +100,10 @@
               items-center
               justify-center
               rounded-full
-              bg-green-50
+              bg-[var(--mat-sys-tertiary-container)]
             ">
 
-            <mat-icon class="text-green-600">
+            <mat-icon class="text-[var(--mat-sys-tertiary)]">
               group_work
             </mat-icon>
 
@@ -112,11 +111,11 @@
 
           <div>
 
-            <p class="text-xs text-gray-500">
+            <p class="text-xs text-[var(--mat-sys-on-surface-variant)]">
               Project Allocations
             </p>
 
-            <p class="text-3xl font-semibold">
+            <p class="text-3xl font-semibold text-[var(--mat-sys-on-surface)]">
               {{ data.activeProjectAllocations }}
             </p>
 
@@ -126,7 +125,7 @@
 
       </mat-card>
 
-      <mat-card appearance="outlined" class="rounded-2xl">
+      <mat-card appearance="outlined" class="rounded-2xl bg-[var(--mat-sys-surface-container-low)] border-[var(--mat-sys-outline-variant)]">
 
         <mat-card-content class="flex items-center gap-4 p-5">
 
@@ -139,10 +138,10 @@
               items-center
               justify-center
               rounded-full
-              bg-purple-50
+              bg-[var(--mat-sys-secondary-container)]
             ">
 
-            <mat-icon class="text-purple-600">
+            <mat-icon class="text-[var(--mat-sys-secondary)]">
               assignment
             </mat-icon>
 
@@ -150,11 +149,11 @@
 
           <div>
 
-            <p class="text-xs text-gray-500">
+            <p class="text-xs text-[var(--mat-sys-on-surface-variant)]">
               Active Projects
             </p>
 
-            <p class="text-3xl font-semibold">
+            <p class="text-3xl font-semibold text-[var(--mat-sys-on-surface)]">
               {{ data.activeProjects }}
             </p>
 
@@ -172,12 +171,12 @@
 
       <mat-card
         appearance="outlined"
-        class="rounded-2xl lg:col-span-2">
+        class="rounded-2xl lg:col-span-2 bg-[var(--mat-sys-surface-container-low)] border-[var(--mat-sys-outline-variant)]">
 
         <mat-card-header
           class="
             border-b
-            border-gray-100
+            border-[var(--mat-sys-outline-variant)]
             px-5
             pt-4
             pb-3
@@ -187,7 +186,7 @@
             class="
               text-sm
               font-medium
-              text-gray-600
+              text-[var(--mat-sys-on-surface-variant)]
             ">
 
             Team Attendance Overview
@@ -215,12 +214,12 @@
 
       <mat-card
         appearance="outlined"
-        class="rounded-2xl lg:col-span-3">
+        class="rounded-2xl lg:col-span-3 bg-[var(--mat-sys-surface-container-low)] border-[var(--mat-sys-outline-variant)]">
 
         <mat-card-header
           class="
             border-b
-            border-gray-100
+            border-[var(--mat-sys-outline-variant)]
             px-5
             pt-4
             pb-3
@@ -230,7 +229,7 @@
             class="
               text-sm
               font-medium
-              text-gray-600
+              text-[var(--mat-sys-on-surface-variant)]
             ">
 
             Team Operations Metrics
@@ -264,7 +263,7 @@
 
       <mat-card
         appearance="outlined"
-        class="rounded-2xl">
+        class="rounded-2xl bg-[var(--mat-sys-surface-container-low)] border-[var(--mat-sys-outline-variant)]">
 
         <mat-card-content class="p-6">
 
@@ -278,10 +277,10 @@
                 items-center
                 justify-center
                 rounded-full
-                bg-blue-50
+                bg-[var(--mat-sys-primary-container)]
               ">
 
-              <mat-icon class="text-blue-600">
+              <mat-icon class="text-[var(--mat-sys-primary)]">
                 groups
               </mat-icon>
 
@@ -289,11 +288,11 @@
 
             <div>
 
-              <h3 class="font-semibold">
+              <h3 class="font-semibold text-[var(--mat-sys-on-surface)]">
                 Team Overview
               </h3>
 
-              <p class="text-sm text-gray-500">
+              <p class="text-sm text-[var(--mat-sys-on-surface-variant)]">
                 Daily team engagement snapshot
               </p>
 
@@ -305,28 +304,24 @@
 
             <div class="flex items-center justify-between">
 
-              <span class="text-sm text-gray-500">
+              <span class="text-sm text-[var(--mat-sys-on-surface-variant)]">
                 Team Attendance
               </span>
 
-              <span class="font-semibold">
-
+              <span class="font-semibold text-[var(--mat-sys-on-surface)]">
                 {{ data.teamAttendanceToday }}
-
               </span>
 
             </div>
 
             <div class="flex items-center justify-between">
 
-              <span class="text-sm text-gray-500">
+              <span class="text-sm text-[var(--mat-sys-on-surface-variant)]">
                 Pending Leave Requests
               </span>
 
-              <span class="font-semibold text-orange-600">
-
+              <span class="font-semibold text-[var(--mat-sys-error)]">
                 {{ data.pendingLeaveRequests }}
-
               </span>
 
             </div>
@@ -339,7 +334,7 @@
 
       <mat-card
         appearance="outlined"
-        class="rounded-2xl">
+        class="rounded-2xl bg-[var(--mat-sys-surface-container-low)] border-[var(--mat-sys-outline-variant)]">
 
         <mat-card-content class="p-6">
 
@@ -353,10 +348,10 @@
                 items-center
                 justify-center
                 rounded-full
-                bg-green-50
+                bg-[var(--mat-sys-tertiary-container)]
               ">
 
-              <mat-icon class="text-green-600">
+              <mat-icon class="text-[var(--mat-sys-tertiary)]">
                 analytics
               </mat-icon>
 
@@ -364,11 +359,11 @@
 
             <div>
 
-              <h3 class="font-semibold">
+              <h3 class="font-semibold text-[var(--mat-sys-on-surface)]">
                 Delivery Overview
               </h3>
 
-              <p class="text-sm text-gray-500">
+              <p class="text-sm text-[var(--mat-sys-on-surface-variant)]">
                 Project activity and allocation summary
               </p>
 
@@ -380,28 +375,24 @@
 
             <div class="flex items-center justify-between">
 
-              <span class="text-sm text-gray-500">
+              <span class="text-sm text-[var(--mat-sys-on-surface-variant)]">
                 Active Allocations
               </span>
 
-              <span class="font-semibold">
-
+              <span class="font-semibold text-[var(--mat-sys-on-surface)]">
                 {{ data.activeProjectAllocations }}
-
               </span>
 
             </div>
 
             <div class="flex items-center justify-between">
 
-              <span class="text-sm text-gray-500">
+              <span class="text-sm text-[var(--mat-sys-on-surface-variant)]">
                 Active Projects
               </span>
 
-              <span class="font-semibold">
-
+              <span class="font-semibold text-[var(--mat-sys-on-surface)]">
                 {{ data.activeProjects }}
-
               </span>
 
             </div>
@@ -425,17 +416,17 @@
           gap-3
           rounded-2xl
           border
-          border-red-200
-          bg-red-50
+          border-[var(--mat-sys-error-row-border,#fca5a5)]
+          bg-[var(--mat-sys-error-container)]
           p-4
           text-sm
-          text-red-700
+          text-[var(--mat-sys-on-error-container)]
         ">
 
         <mat-icon
           class="
             shrink-0
-            text-red-400
+            text-[var(--mat-sys-error)]
           ">
 
           error_outline

@@ -133,11 +133,12 @@
 
 @else if (attendanceResponse$ | async; as response) {
 
-  <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+  <div class="overflow-hidden rounded-2xl border border-gray-200 bg-[var(--mat-sys-surface-container-low)]">
 
     <table
       mat-table
-      [dataSource]="response.items">
+      [dataSource]="response.items"
+      class="w-full bg-[var(--mat-sys-surface-container-low)]">
 
       <ng-container matColumnDef="employeeName">
 
@@ -150,7 +151,7 @@
           *matCellDef="let attendance">
 
           <button
-            class="font-medium text-left text-blue-600 hover:underline"
+            class="font-medium text-left text-[var(--mat-sys-primary)] hover:underline"
             (click)="
               openEmployeeReport(
                 attendance.employeeId,
@@ -246,14 +247,16 @@
 
       <tr
         mat-header-row
-        *matHeaderRowDef="displayedColumns" >
+        *matHeaderRowDef="displayedColumns">
+      </tr>
 
       <tr
         mat-row
         *matRowDef="
           let row;
           columns: displayedColumns
-        " >
+        ">
+      </tr>
 
     </table>
 

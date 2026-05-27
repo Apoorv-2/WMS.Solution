@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>
+<h2 mat-dialog-title class="bg-[var(--mat-sys-surface-container-low)]">
   {{
     isEditMode
       ? 'Edit Announcement'
@@ -6,7 +6,7 @@
   }}
 </h2>
 
-<mat-dialog-content>
+<mat-dialog-content class="bg-[var(--mat-sys-surface-container-low)]">
 
   <form
     [formGroup]="form"
@@ -68,7 +68,7 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" class="bg-[var(--mat-sys-surface-container-low)]">
 
   <button
     mat-button

@@ -4,11 +4,12 @@
 
 @if (absentees$ | async; as absentees) {
 
-  <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+  <div class="overflow-hidden rounded-2xl border border-gray-200 bg-[var(--mat-sys-surface-container-low)]">
 
     <table
       mat-table
-      [dataSource]="absentees">
+      [dataSource]="absentees"
+      class="w-full bg-[var(--mat-sys-surface-container-low)]">
 
       <ng-container matColumnDef="employeeName">
 
@@ -54,14 +55,16 @@
 
       <tr
         mat-header-row
-        *matHeaderRowDef="displayedColumns" >
+        *matHeaderRowDef="displayedColumns">
+      </tr>
 
       <tr
         mat-row
         *matRowDef="
           let row;
           columns: displayedColumns
-        " >
+        ">
+      </tr>
 
     </table>
 

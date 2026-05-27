@@ -1,15 +1,17 @@
-<h2 mat-dialog-title>
+<h2 mat-dialog-title class="text-[var(--mat-sys-on-surface)]">
   {{ isEditMode ? 'Edit Department' : 'Create Department' }}
 </h2>
 
 <mat-dialog-content>
   <form [formGroup]="form" class="mt-4 flex flex-col gap-4">
-    <mat-form-field appearance="outline">
+    
+    <mat-form-field appearance="outline" class="w-full">
       <mat-label>
         Department Name
       </mat-label>
 
       <input matInput formControlName="departmentName">
+      
       @if (
         form.controls.departmentName.touched
         &&
@@ -21,7 +23,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="w-full">
       <mat-label>
         Description
       </mat-label>
@@ -32,19 +34,18 @@
         formControlName="description">
       </textarea>
     </mat-form-field>
+    
   </form>
-
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" class="gap-2 px-6 pb-4">
 
   <button mat-button mat-dialog-close>
     Cancel
   </button>
 
   <button
-    mat-raised-button
-    color="primary"
+    mat-flat-button
     [disabled]="isLoading"
     (click)="onSubmit()">
 
@@ -52,9 +53,9 @@
       <mat-spinner
         diameter="20">
       </mat-spinner>
-
     } @else {
       {{ isEditMode ? 'Update' : 'Create' }}
     }
   </button>
+  
 </mat-dialog-actions>
