@@ -9,185 +9,185 @@ pr:
       - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 variables:
   - group: wms-secrets
   - name: buildConfiguration
-    value: 'Release'
+    value: "Release"
   - name: dotnetVersion
-    value: '8.0.x'
+    value: "8.0.x"
   - name: nodeVersion
-    value: '20.x'
+    value: "20.x"
   - name: apiProject
-    value: 'WMS.API/WMS.API.csproj'
+    value: "WMS.API/WMS.API.csproj"
   - name: azureSubscription
-    value: 'wms-azure-connection'       #Azure Connection name
+    value: "wms-azure-connection" #Azure Connection name
   - name: appServiceName
-    value: 'wms-api-apoorv'                   #App Service name
+    value: "wms-api-apoorv" #App Service name
   - name: staticWebAppName
-    value: 'wms-frontend'              #Web App name
+    value: "wms-frontend" #Web App name
 
 stages:
-
-# ─────────────────────────────────────────
-# STAGE 1: Build .NET API
-# ─────────────────────────────────────────
-- stage: BuildAPI
-  displayName: 'Build .NET API'
-  jobs:
-  - job: BuildDotNet
-    displayName: 'Restore, Build, Publish API'
-    steps:
-
-    - task: UseDotNet@2
-      displayName: 'Use .NET SDK $(dotnetVersion)'
-      inputs:
-        version: $(dotnetVersion)
-
-    - task: DotNetCoreCLI@2
-      displayName: 'Restore NuGet packages'
-      inputs:
-        command: restore
-        projects: '**/*.csproj'
-
-    - task: DotNetCoreCLI@2
-      displayName: 'Build solution'
-      inputs:
-        command: build
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration) --no-restore'
-
-    - task: DotNetCoreCLI@2
-      displayName: 'Run .NET tests'
-      inputs:
-        command: test
-        projects: 'WMS.Tests/*.csproj'
-        arguments: '--configuration $(buildConfiguration) --no-build'
-      continueOnError: true   # Don't fail the pipeline if tests fail (yet)
-
-    - task: DotNetCoreCLI@2
-      displayName: 'Publish API'
-      inputs:
-        command: publish
-        publishWebProjects: false
-        projects: '$(apiProject)'
-        arguments: '--configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/api'
-        zipAfterPublish: true
-        modifyOutputPath: false
-
-    - task: PublishPipelineArtifact@1
-      displayName: 'Upload API artifact'
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/api'
-        artifact: 'api-drop'
-        publishLocation: 'pipeline'
-
-# ─────────────────────────────────────────
-# STAGE 2: Build Angular
-# ─────────────────────────────────────────
-- stage: BuildAngular
-  displayName: 'Build Angular Frontend'
-  dependsOn: []   # run in parallel with BuildAPI
-  jobs:
-  - job: BuildNG
-    displayName: 'npm install & ng build'
-    steps:
-
-    - task: NodeTool@0
-      displayName: 'Use Node.js $(nodeVersion)'
-      inputs:
-        versionSpec: $(nodeVersion)
-
-    - script: |
-        cd WMS.Frontend
-        npm ci
-      displayName: 'npm ci (clean install)'
-
-    - script: |
-        cd WMS.Frontend
-        npx ng build --configuration production --output-path ../dist/frontend
-      displayName: 'ng build --production'
-
-    - task: CopyFiles@2
-      displayName: 'Copy staticwebapp.config.json to dist'
-      inputs:
-        SourceFolder: 'WMS.Frontend'
-        Contents: 'staticwebapp.config.json'
-        TargetFolder: 'dist/frontend/browser'
-
-    - task: PublishPipelineArtifact@1
-      displayName: 'Upload Angular artifact'
-      inputs:
-        targetPath: 'dist/frontend/browser'
-        artifact: 'angular-drop'
-        publishLocation: 'pipeline'
-
-# ─────────────────────────────────────────
-# STAGE 3: Deploy API to App Service
-# ─────────────────────────────────────────
-- stage: DeployAPI
-  displayName: 'Deploy API to Azure App Service'
-  dependsOn: BuildAPI
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-  jobs:
-  - deployment: DeployWebAPI
-    displayName: 'Deploy to App Service'
-    environment: 'production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-
-          - task: DownloadPipelineArtifact@2
-            displayName: 'Download API artifact'
+  # ─────────────────────────────────────────
+  # STAGE 1: Build .NET API
+  # ─────────────────────────────────────────
+  - stage: BuildAPI
+    displayName: "Build .NET API"
+    jobs:
+      - job: BuildDotNet
+        displayName: "Restore, Build, Publish API"
+        steps:
+          - task: UseDotNet@2
+            displayName: "Use .NET SDK $(dotnetVersion)"
             inputs:
-              artifact: 'api-drop'
-              path: '$(Pipeline.Workspace)/api-drop'
+              version: $(dotnetVersion)
 
-          - task: AzureWebApp@1
-            displayName: 'Deploy to Azure App Service'
+          - task: DotNetCoreCLI@2
+            displayName: "Restore NuGet packages"
             inputs:
-              azureSubscription: '$(azureSubscription)'
-              appType: 'webAppLinux'
-              appName: '$(appServiceName)'
-              package: '$(Pipeline.Workspace)/api-drop/*.zip'
-              runtimeStack: 'DOTNETCORE|8.0'
+              command: restore
+              projects: "**/*.csproj"
 
-# ─────────────────────────────────────────
-# STAGE 4: Deploy Angular to Static Web Apps
-# ─────────────────────────────────────────
-- stage: DeployAngular
-  displayName: 'Deploy Angular to Static Web Apps'
-  dependsOn: BuildAngular
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-  jobs:
-  - deployment: DeployStaticApp
-    displayName: 'Deploy to Azure Static Web Apps'
-    environment: 'production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-
-          - task: DownloadPipelineArtifact@2
-            displayName: 'Download Angular artifact'
+          - task: DotNetCoreCLI@2
+            displayName: "Build solution"
             inputs:
-              artifact: 'angular-drop'
-              path: '$(Pipeline.Workspace)/angular-drop'
+              command: build
+              projects: "**/*.csproj"
+              arguments: "--configuration $(buildConfiguration) --no-restore"
+
+          - task: DotNetCoreCLI@2
+            displayName: "Run .NET tests"
+            inputs:
+              command: test
+              projects: "WMS.Tests/*.csproj"
+              arguments: "--configuration $(buildConfiguration) --no-build"
+            continueOnError: true # Don't fail the pipeline if tests fail (yet)
+
+          - task: DotNetCoreCLI@2
+            displayName: "Publish API"
+            inputs:
+              command: publish
+              publishWebProjects: false
+              projects: "$(apiProject)"
+              arguments: "--configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/api"
+              zipAfterPublish: true
+              modifyOutputPath: false
+
+          - task: PublishPipelineArtifact@1
+            displayName: "Upload API artifact"
+            inputs:
+              targetPath: "$(Build.ArtifactStagingDirectory)/api"
+              artifact: "api-drop"
+              publishLocation: "pipeline"
+
+  # ─────────────────────────────────────────
+  # STAGE 2: Build Angular
+  # ─────────────────────────────────────────
+  - stage: BuildAngular
+    displayName: "Build Angular Frontend"
+    dependsOn: [] # run in parallel with BuildAPI
+    jobs:
+      - job: BuildNG
+        displayName: "npm install & ng build"
+        steps:
+          - task: NodeTool@0
+            displayName: "Use Node.js $(nodeVersion)"
+            inputs:
+              versionSpec: $(nodeVersion)
+
+          - script: |
+              cd WMS.Frontend
+              npm ci
+            displayName: "npm ci (clean install)"
+
+          - script: |
+              cd WMS.Frontend
+              npx ng build --configuration production --output-path ../dist/frontend
+            displayName: "ng build --production"
 
           - task: CopyFiles@2
-            displayName: 'Copy artifact to working directory'
+            displayName: "Copy staticwebapp.config.json to dist"
             inputs:
-              SourceFolder: '$(Pipeline.Workspace)/angular-drop'
-              Contents: '**'
-              TargetFolder: '$(System.DefaultWorkingDirectory)/angular-drop'
+              SourceFolder: "WMS.Frontend"
+              Contents: "staticwebapp.config.json"
+              TargetFolder: "dist/frontend/browser"
 
-          - task: AzureStaticWebApp@0
-            displayName: 'Deploy to Static Web Apps'
+          - task: PublishPipelineArtifact@1
+            displayName: "Upload Angular artifact"
             inputs:
-              app_location: 'angular-drop'
-              skip_app_build: true
-              azure_static_web_apps_api_token: '$(STATIC_WEB_APP_TOKEN)'
-            env:
-              CI: false
+              targetPath: "dist/frontend/browser"
+              artifact: "angular-drop"
+              publishLocation: "pipeline"
+
+  # ─────────────────────────────────────────
+  # STAGE 3: Deploy API to App Service
+  # ─────────────────────────────────────────
+  - stage: DeployAPI
+    displayName: "Deploy API to Azure App Service"
+    dependsOn: BuildAPI
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: DeployWebAPI
+        displayName: "Deploy to App Service"
+        environment: "production"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadPipelineArtifact@2
+                  displayName: "Download API artifact"
+                  inputs:
+                    artifact: "api-drop"
+                    path: "$(Pipeline.Workspace)/api-drop"
+
+                - task: AzureWebApp@1
+                  displayName: "Deploy to Azure App Service"
+                  inputs:
+                    azureSubscription: "$(azureSubscription)"
+                    appType: "webAppLinux"
+                    appName: "$(appServiceName)"
+                    package: "$(Pipeline.Workspace)/api-drop/*.zip"
+                    runtimeStack: "DOTNETCORE|8.0"
+
+  ## ─────────────────────────────────────────
+  # STAGE 4: Deploy Angular to Linux App Service
+  # ─────────────────────────────────────────
+  - stage: DeployAngular
+    displayName: "Deploy Angular to App Service"
+    dependsOn: BuildAngular
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: DeployAngularApp
+        displayName: "Deploy to Linux App Service"
+        environment: "production"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadPipelineArtifact@2
+                  displayName: "Download Angular artifact"
+                  inputs:
+                    artifact: "angular-drop"
+                    path: "$(Pipeline.Workspace)/angular-drop"
+
+                # Azure Linux App Services expect a zipped file or a clean directory.
+                # We zip the contents so it deploys cleanly.
+                - task: ArchiveFiles@2
+                  displayName: "Zip Angular dist"
+                  inputs:
+                    rootFolderOrFile: "$(Pipeline.Workspace)/angular-drop"
+                    includeRootFolder: false
+                    archiveType: "zip"
+                    archiveFile: "$(Build.ArtifactStagingDirectory)/frontend.zip"
+                    replaceExistingArchive: true
+
+                - task: AzureWebApp@1
+                  displayName: "Deploy to Azure App Service"
+                  inputs:
+                    azureSubscription: "$(azureSubscription)"
+                    appType: "webAppLinux"
+                    appName: "$(staticWebAppName)" # Ensure this matches your frontend App Service name
+                    package: "$(Build.ArtifactStagingDirectory)/frontend.zip"
+                    # This tells Azure it's a Node app
+                    runtimeStack: "NODE|24-lts"
