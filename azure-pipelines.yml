@@ -90,7 +90,7 @@ stages:
       - job: BuildNG
         displayName: "npm install & ng build"
         steps:
-          - task: NodeTool@0
+          - task: UseNode@1
             displayName: "Use Node.js $(nodeVersion)"
             inputs:
               versionSpec: $(nodeVersion)
