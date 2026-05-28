@@ -22,9 +22,9 @@ variables:
     value: "WMS.API/WMS.API.csproj"
   - name: azureSubscription
     value: "wms-azure-connection" #Azure Connection name
-  - name: appServiceName
+  - name: apiAppServiceName
     value: "wms-api-apoorv" #App Service name
-  - name: staticWebAppName
+  - name: frontendAppServiceName
     value: "wms-frontend" #Web App name
 
 stages:
@@ -97,8 +97,8 @@ stages:
 
           - script: |
               cd WMS.Frontend
-              npm ci
-            displayName: "npm ci (clean install)"
+              npm install  # Changed from 'npm ci' to 'npm install'
+            displayName: 'npm install'
 
           - script: |
               cd WMS.Frontend
@@ -145,7 +145,7 @@ stages:
                   inputs:
                     azureSubscription: "$(azureSubscription)"
                     appType: "webAppLinux"
-                    appName: "$(appServiceName)"
+                    appName: "$(apiAppServiceName)"
                     package: "$(Pipeline.Workspace)/api-drop/*.zip"
                     runtimeStack: "DOTNETCORE|8.0"
 
@@ -186,7 +186,7 @@ stages:
                   inputs:
                     azureSubscription: "$(azureSubscription)"
                     appType: "webAppLinux"
-                    appName: "$(staticWebAppName)" # Ensure this matches your frontend App Service name
+                    appName: "$(frontendAppServiceName)" # Ensure this matches your frontend App Service name
                     package: "$(Build.ArtifactStagingDirectory)/frontend.zip"
                     # This tells Azure it's a Node app
                     runtimeStack: "NODE|24-lts"
